@@ -59,7 +59,7 @@ def _preprocess_data(data):
 
     # ----------- Replace this code with your own preprocessing steps --------
     def preprocess(input_df):
-        
+        input_df = input_df
         # replace missing values
         mean_val_pres = input_df['Valencia_pressure'].mean()
         input_df['Valencia_pressure'] = input_df['Valencia_pressure'].fillna(mean_val_pres)
