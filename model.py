@@ -64,21 +64,12 @@ def _preprocess_data(data):
         mean_val_pres = input_df['Valencia_pressure'].mean()
         input_df['Valencia_pressure'] = input_df['Valencia_pressure'].fillna(mean_val_pres)
         
-        # create new features Year, Month, Day, Hour
-        df_sub_time = input_df['time'].str.split('[-:\s]', expand=True)
-        df_sub_time.rename(columns={0: 'Year', 1: 'Month', 2: 'Day', 3: 'Hour', 4: 'x', 5: 'y'}, inplace=True)
-        df_sub_time.drop(['x', 'y'], axis=1, inplace=True)
-        input_df = pd.concat([input_df, df_sub_time], axis=1)
-        
         # engineer existing features from Valancia_wind_deg and Seville_pressure
         input_df['Valencia_wind_deg'] = input_df['Valencia_wind_deg'].str.extract('(\d+)')
         input_df['Seville_pressure'] = input_df['Seville_pressure'].str.extract('(\d+)')
         
         # Change the object dtypes to numeric
-        input_df[['Valencia_wind_deg', 'Seville_pressure', 'Year', 'Month', 'Day', 'Hour']] = input_df[['Valencia_wind_deg', 
-                                                                                                            'Seville_pressure', 
-                                                                                                            'Year', 'Month', 'Day', 
-                                                                                                            'Hour']].apply(pd.to_numeric)
+        input_df[['Valencia_wind_deg', 'Seville_pressure']] = input_df[['Valencia_wind_deg','Seville_pressure']].apply(pd.to_numeric)
         
         # Drop irrelevant columns to our model
         input_df = input_df.drop([col for col in input_df.columns if col.endswith(('temp_max', 'temp_min'))], axis=1)
