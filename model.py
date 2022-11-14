@@ -72,7 +72,6 @@ def _preprocess_data(data):
         input_df[['Valencia_wind_deg', 'Seville_pressure']] = input_df[['Valencia_wind_deg','Seville_pressure']].apply(pd.to_numeric)
         
         # Drop irrelevant columns to our model
-        input_df = input_df.drop([col for col in input_df.columns if col.endswith(('temp_max', 'temp_min'))], axis=1)
         df_clean = input_df.drop(['Unnamed: 0', 'time', ], axis = 1)
         
         return df_clean
