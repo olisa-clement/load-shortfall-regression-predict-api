@@ -63,7 +63,6 @@ def _preprocess_data(data):
         # replace missing values
         mean_val_pres = input_df['Valencia_pressure'].mean()
         input_df['Valencia_pressure'] = input_df['Valencia_pressure'].fillna(mean_val_pres)
-        input_df.isnull().sum()
         
         # create new features Year, Month, Day, Hour
         df_sub_time = input_df['time'].str.split('[-:\s]', expand=True)
