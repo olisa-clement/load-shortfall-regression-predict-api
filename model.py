@@ -82,21 +82,7 @@ def _preprocess_data(data):
         
         # Drop irrelevant columns to our model
         input_df = input_df.drop([col for col in input_df.columns if col.endswith(('temp_max', 'temp_min'))], axis=1)
-        input_df = input_df.drop(['Unnamed: 0', 'time', ], axis = 1)
-        
-        # Create new features - Season
-        # Create the conditions and categories
-        season_cond = [((input_df['Month'] > 2) & (input_df['Month'] < 6)),
-                    ((input_df['Month'] > 5) & (input_df['Month'] < 9)),
-                    ((input_df['Month'] > 8) & (input_df['Month'] < 12)),
-                    ((input_df['Month'] < 3) | (input_df['Month'] == 12))]
-        season_category = ["Spring", "Summer", "Autumn", "Winter"]
-        
-        # Populate the newly created column
-        input_df['Season'] = np.select(season_cond, season_category)
-        
-        # Create Dummies
-        df_clean = pd.get_dummies(input_df, drop_first=True)
+        df_clean = input_df.drop(['Unnamed: 0', 'time', ], axis = 1)
         
         return df_clean
 
