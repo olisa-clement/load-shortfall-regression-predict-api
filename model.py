@@ -58,26 +58,9 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    def preprocess(input_df):
-        input_df = input_df
-        # replace missing values
-        mean_val_pres = input_df['Valencia_pressure'].mean()
-        input_df['Valencia_pressure'] = input_df['Valencia_pressure'].fillna(mean_val_pres)
-        
-        # engineer existing features from Valancia_wind_deg and Seville_pressure
-        input_df['Valencia_wind_deg'] = input_df['Valencia_wind_deg'].str.extract('(\d+)')
-        input_df['Seville_pressure'] = input_df['Seville_pressure'].str.extract('(\d+)')
-        
-        # Change the object dtypes to numeric
-        input_df[['Valencia_wind_deg', 'Seville_pressure']] = input_df[['Valencia_wind_deg','Seville_pressure']].apply(pd.to_numeric)
-        
-        # Drop irrelevant columns to our model
-        df_clean = input_df.drop(['Unnamed: 0', 'time', ], axis = 1)
-        
-        return df_clean
 
-    predict_vector = preprocess(feature_vector_df)
-    #predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    #predict_vector = preprocess(feature_vector_df)
+    predict_vector = feature_vector_df[['Bilbao_clouds_all', 'Bilbao_wind_speed', 'Seville_clouds_all','Bilbao_wind_deg', 'Barcelona_wind_speed', 'Barcelona_wind_deg']]
     # ------------------------------------------------------------------------
 
     return predict_vector
