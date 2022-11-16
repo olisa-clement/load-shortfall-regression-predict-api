@@ -60,55 +60,9 @@ def _preprocess_data(data):
     # ----------- Replace this code with your own preprocessing steps --------
 
     def preprocess(input_df):
-        ''' 
-        This function takes in a dataframe, preprocesses the DataFrame by:
         
-        - replacing the missing values
-        - create new features - Year, Month, Day and Hour
-        - Engineer existing features by extracting numeric components
-        - change dtype
-        - drop irrelevant columns to our model
-        
-        '''
-        
-        # replace missing values
-        mean_val_pres = input_df['Valencia_pressure'].mean()
-        input_df['Valencia_pressure'] = input_df['Valencia_pressure'].fillna(mean_val_pres)
-        input_df.isnull().sum()
-        
-        # create new features Year, Month, Day, Hour
-        df_sub_time = input_df['time'].str.split('[-:\s]', expand=True)
-        df_sub_time.rename(columns={0: 'Year', 1: 'Month', 2: 'Day', 3: 'Hour', 4: 'x', 5: 'y'}, inplace=True)
-        df_sub_time.drop(['x', 'y'], axis=1, inplace=True)
-        input_df = pd.concat([input_df, df_sub_time], axis=1)
-        
-        # engineer existing features from Valancia_wind_deg and Seville_pressure
-        input_df['Valencia_wind_deg'] = input_df['Valencia_wind_deg'].str.extract('(\d+)')
-        input_df['Seville_pressure'] = input_df['Seville_pressure'].str.extract('(\d+)')
-        
-        # Change the object dtypes to numeric
-        input_df[['Valencia_wind_deg', 'Seville_pressure', 'Year', 'Month', 'Day', 'Hour']] = input_df[['Valencia_wind_deg', 
-                                                                                                            'Seville_pressure', 
-                                                                                                            'Year', 'Month', 'Day', 
-                                                                                                            'Hour']].apply(pd.to_numeric)
-        
-        # Drop irrelevant columns to our model
-        input_df = input_df.drop([col for col in input_df.columns if col.endswith(('temp_min', 'temp_max'))], axis=1)
-        input_df = input_df.drop(['Unnamed: 0', 'time', ], axis = 1)
-        
-        # Create new features - Season
-        # Create the conditions and categories
-        season_cond = [((input_df['Month'] > 2) & (input_df['Month'] < 6)),
-                    ((input_df['Month'] > 5) & (input_df['Month'] < 9)),
-                    ((input_df['Month'] > 8) & (input_df['Month'] < 12)),
-                    ((input_df['Month'] < 3) | (input_df['Month'] == 12))]
-        season_category = ["Spring", "Summer", "Autumn", "Winter"]
-        
-        # Populate the newly created column
-        input_df['Season'] = np.select(season_cond, season_category)
-        
-        # Create Dummies
-        df_clean = pd.get_dummies(input_df, drop_first=True)
+        input_df = input_df.drop(['Unnamed: 0', 'time','Valencia_wind_deg', 'Seville_pressure'], axis = 1)
+        df_clean = input_df.fillna(0)
         
         return df_clean
 
